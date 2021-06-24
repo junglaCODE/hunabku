@@ -1,12 +1,14 @@
 # Hunabku
-**Descripcion :** Librería para renderizar vistas para codeigniter 4 
-**Autor :** JLGC/monolinux | jlgarcia@junglacode.org
-**web :** junglacode.org
+- **Descripcion :** Librería para renderizar vistas para codeigniter 4, Esta basado en la idea de atomic desing de frost https://bradfrost.com/blog/post/atomic-web-design/.
+Se usa tambien las libreria de view de ci4 que ayuda mejorar el performance de la render de las vistas https://codeigniter4.github.io/userguide/outgoing/index.html
+
+- **Autor :** JLGC/monolinux | jlgarcia@junglacode.org
+- **web :** junglacode.org
 
 ## Significado
-**Hunabku :** Dios Maya de la creación
-**Kalkami :** Palabra Nahualt que significa Arquitecto
-**Amantecatl :** Palabra Nahualt que significa Artesano
+- **Hunabku :** Dios Maya de la creación
+- **Kalkami :** Palabra Nahualt que significa Arquitecto
+- **Amantecatl :** Palabra Nahualt que significa Artesano
 
 
 ## Estructura 
