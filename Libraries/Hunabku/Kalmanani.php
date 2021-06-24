@@ -1,8 +1,8 @@
 <?php namespace App\Libraries\Hunabku;
 /**
- * @name        CodeIgniter Template Hunabku [Dios de la creación]
- * @author      junglaCODE
- * @link        http://www.junglacode.org
+ * @package     CodeIgniter Template Hunabku [Dios de la creación]
+ * @author      junglaCODE <desarrollo@junglacode.org>
+ * @link        https://github.com/junglaCODE/hunabku/
  * @license     MIT License Copyright (c) 2021 JLGC/monolinux
  */
 
