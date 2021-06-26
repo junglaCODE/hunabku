@@ -10,27 +10,21 @@
     <?= $Template->_stylesheets ?>
   </head>
 
-  <body class="vertical-layout vertical-menu-collapsible menu-collapse" 
-    data-open="click"
-    data-menu="vertical-dark-menu-template">
+  <body>
 
-    <header class="page-topbar" id="header">
-      <div class="navbar navbar-fixed" data-desing="organism-top-navbar"> 
-        <?= $Template->Widget('TopNavBar') ?>
-      </div>
+    <header>
+  
     </header>
   
-    <aside class="sidenav-main nav-collapsible sidenav-active-square sidenav-dark nav-collapsed" 
-      data-desing="organism-menu-sidenav">
-        <?= $Template->Widget('MenuSideNav') ?>
-    </aside>
 
     <div id="main" data-desing="template-module">
-      <div class="row">
           <?= $this->renderSection('module') ?>
-      </div>
     </div>
-    
+	  
+    <footer>
+	
+	</footer>	
+	
     <script src="<?= $Template->framework ?>/../jquery.js?ver=<?=VERSION?>" type="text/javascript"></script>
     <?= $Template->_javascripts ?>
   </body>
