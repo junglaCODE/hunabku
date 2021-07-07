@@ -14,6 +14,7 @@ class Kalmanani{
     public $_stylesheets = NULL;
     public $_javascripts = NULL;
     public $_breadcrumbs = NULL;
+    private $module_path =  NULL;
 
     public function __construct(){
         helper('html');
@@ -30,8 +31,8 @@ class Kalmanani{
         try {
             $data = array_merge($params , array('Template' => $this));
             return view(
-                    $this->_config->main_path.$view ,
-                     $data ,
+                    $this->module_path.$view ,
+                    $data ,
                     [ 'cache' => $this->_config->cache ]
                 );            
         } catch (\Throwable $error) {
@@ -43,6 +44,23 @@ class Kalmanani{
             exit();
         }
     }
+
+    public function Component($view,$params){
+        try {
+            return view(
+                $this->module_path.$view ,
+                $params ,
+                [ 'cache' => $this->_config->cache / 2  ]
+            );            
+        } catch (\Throwable $error) {
+            if(ENVIRONMENT == 'production'):
+                print('el component ['.$view.'] no podido cargar ¡Quiza no exista!. Verifique la ruta');
+            else:
+                print($error->getMessage());
+            endif;    
+            exit();
+        }
+    } 
 
     public function Widget($organism){  
         try {
@@ -57,8 +75,12 @@ class Kalmanani{
         }
     }
     
-    public function setCache($time = null){
-        return  [ 'cache' => $this->_config->cache ];
+    public function setPathModule($path){
+        $this->module_path = $this->_config->main_path.$path;
+    }
+
+    public function getPathModule(){
+        return $this->module_path;
     }
 
     private function trigger_title($title) {
