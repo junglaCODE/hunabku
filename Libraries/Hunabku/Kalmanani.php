@@ -16,6 +16,7 @@ class Kalmanani{
     public $_breadcrumbs = NULL;
 
     public function __construct(){
+        helper('html');
         $this->_config = config('View');     
         $this->framework = base_url().$this->_config->repository['assets']
                                     .$this->_config->repository['framework'];

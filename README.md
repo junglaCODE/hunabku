@@ -38,4 +38,14 @@ Se usa tambien las libreria de view de ci4 que ayuda mejorar el performance de l
 	
 ```
 
+## Controller > BaseController.php
 
+```
+	$this->Template = new \App\Libraries\Hunabku\Kalmanani();
+```
+
+## Example
+
+Se puede usar de ejemplo la vista skeleton.php que hace referencia al template que esta ubicado en `Templates\example.php`
+acceso:  
+- **http:localhost\index**
