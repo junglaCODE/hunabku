@@ -23,9 +23,7 @@ class View extends \CodeIgniter\Config\View
 	 *  { title|esc(js) }
 	 *  { created_on|date(Y-m-d)|esc(attr) }
 	 */
-	public $filters = [
-		'capitalize' => '\CodeIgniter\View\Filters::capitalize'
-	];
+	public $filters = [];
 
 	/**
 	 * Parser Plugins provide a way to extend the functionality provided
@@ -40,18 +38,27 @@ class View extends \CodeIgniter\Config\View
 	 * in the cache
 	 * 
 	 */
-	public $cache = SECOND * 11; /*11 segundos*/
+	public $cache = 1;
 
-
+	/**
+	 * this directory is used to store everything related to
+	 *  templates and widgets of this library
+	 **/
 	public $widgets = '/Templates/_widgets';
 
-		/**
+	/**
+	 * this directory is used for to improve the organization 
+	 * of business logic views 
+	 **/
+	public $main_path = '/Modules/';
+
+	/**
 	 * Configuration of the repository of assets, what works for
 	 * render used template.
 	 */
 	public $repository = array(
 			'assets' 	=> 	'/_assets/' , 
-			'framework'	=>	'thirdparty/adminlte' ,
+			'framework'	=>	'third_party/materialize-admin' ,
 			'images'	=> 	'/_assets/images' ,
 			'fonts'		=> 	'/_assets/fonts' ,
 		);

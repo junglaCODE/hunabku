@@ -30,7 +30,8 @@ class Kalmanani{
         try {
             $data = array_merge($params , array('Template' => $this));
             return view(
-                    $view, $data ,
+                    $this->_config->main_path.$view ,
+                     $data ,
                     [ 'cache' => $this->_config->cache ]
                 );            
         } catch (\Throwable $error) {
@@ -56,6 +57,10 @@ class Kalmanani{
         }
     }
     
+    public function setCache($time = null){
+        return  [ 'cache' => $this->_config->cache ];
+    }
+
     private function trigger_title($title) {
         return htmlspecialchars(strip_tags($title)).' | '.APP;
     }
