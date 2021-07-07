@@ -11,7 +11,9 @@ class Amantecatl
         $repository = $this->_config->widgets.'/'.strtolower(__FUNCTION__);
         return  view(
                     $repository.'/organism',
-                    array()
+                    array(
+                        'PluginsOrganism' => '\\'.__CLASS__.'::_plugins' 
+                    )
                 );
     }
 
@@ -19,21 +21,48 @@ class Amantecatl
         $repository = $this->_config->widgets.'/'.strtolower(__FUNCTION__);
         return  view($repository.'/organism',
                     array(
-                        'Brand' => view( $repository.'/_brand' ,
-                                        array(  ),
-                                    ),
                         'MenuOrganism'  => '\\'.__CLASS__.'::_listModules' ,
+                        'BrandComponent' => array(
+                                        'title' => explode(' ' ,APP,2),
+                                        'logo' => base_url(REPOSITORY_IMGS.LOGO) ,
+                                        'home' => base_url()
+                                    )
                     ),
                 );
     }
 
-
-    public function _listModules($params){
+    public function _plugins($params){
         try {
             $items = array();
             return view(
-                $this->_config->widgets."/menusidenav/_menu" ,
-                array( 'items' => $items)
+                $this->_config->widgets."/topnavbar/_navplugins" ,
+                array(
+                    'ComponentCardUser' => view(
+                        $this->_config->widgets.'/topnavbar/_carduser' ,
+                        array(
+                            'user'      => 'monolinux' ,
+                            'avatar'    => base_url(REPOSITORY_IMGS.'default-avatar.png'),
+                            'fullname'  => 'Juan Luis Garcia Corrales',
+                            'departament' => 'Sistemas Programación' ,
+                            'resource_exit' => '#'
+                        )
+                    )
+                )
+            );
+        } catch (\Exception $error) {
+            if(ENVIRONMENT == 'production'):
+                print('Existe un error al crear los items de los plugins') ;              
+            else:
+                print($error->getMessage());
+            endif;  
+            exit();
+        }
+    }
+
+    public function _listModules($params){
+        try {            
+            return view(
+                $this->_config->widgets."/menusidenav/_menu"
             );
         } catch (\Exception $error) {
             if(ENVIRONMENT == 'production'):
@@ -45,4 +74,5 @@ class Amantecatl
         }
        
     }
+
 }

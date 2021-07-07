@@ -23,7 +23,9 @@ class View extends \CodeIgniter\Config\View
 	 *  { title|esc(js) }
 	 *  { created_on|date(Y-m-d)|esc(attr) }
 	 */
-	public $filters = [];
+	public $filters = [
+		'capitalize' => '\CodeIgniter\View\Filters::capitalize'
+	];
 
 	/**
 	 * Parser Plugins provide a way to extend the functionality provided
@@ -49,7 +51,7 @@ class View extends \CodeIgniter\Config\View
 	 */
 	public $repository = array(
 			'assets' 	=> 	'/_assets/' , 
-			'framework'	=>	'third_party/materialize-admin' ,
+			'framework'	=>	'thirdparty/adminlte' ,
 			'images'	=> 	'/_assets/images' ,
 			'fonts'		=> 	'/_assets/fonts' ,
 		);
