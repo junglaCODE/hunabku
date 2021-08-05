@@ -34,34 +34,44 @@ class View extends \CodeIgniter\Config\View
 
 	/**
 	 * Configuration of cache for view_cell and view. used constants
-	 * file => app/Config/ section : Timing Constants, for time duration
-	 * in the cache
+	 * section : Timing Constants, for time duration
+	 * in the cache is in seconds
 	 * 
 	 */
-	public $cache = 1;
+	public $cache = 60;
 
 	/**
 	 * this directory is used to store everything related to
 	 *  templates and widgets of this library
 	 **/
-	public $widgets = '/Templates/_widgets';
+	public $widgets = 'Templates/_widgets/';
 
 	/**
 	 * this directory is used for to improve the organization 
 	 * of business logic views 
 	 **/
-	public $main_path = '/Modules/';
+	public $main_path = 'Modules/';
 
+	/**
+	 * Configuration path/url of the icon of the app
+	**/
+	public $icon = 'images/logo.png';
 	/**
 	 * Configuration of the repository of assets, what works for
 	 * render used template.
 	 */
 	public $repository = array(
-			'assets' 	=> 	'/_assets/' , 
-			'framework'	=>	'third_party/materialize-admin' ,
-			'images'	=> 	'/_assets/images' ,
-			'fonts'		=> 	'/_assets/fonts' ,
+			'assets' 	=> 	'_assets/' , 
+			'libraries' =>  '_assets/thirdparty/',
+			'framework'	=>	'thirdparty/materialize-admin' ,
+			'images'	=> 	'_assets/images' ,
+			'fonts'		=> 	'_assets/fonts' ,
 		);
-	
 
+	/**
+	 * Configuracion del template
+	 */
+	public $custom = array(
+		'theme' => 'dark'
+	);
 }

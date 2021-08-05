@@ -1,166 +1,218 @@
 <?php namespace App\Libraries\Hunabku;
 /**
  * @package     CodeIgniter Template Hunabku [Dios de la creación]
- * @author      junglaCODE <desarrollo@junglacode.org>
+ * @author      junglaCODE <soporte@junglacode.org>
  * @link        https://github.com/junglaCODE/hunabku/
  * @license     MIT License Copyright (c) 2021 JLGC/monolinux
  */
 
 class Kalmanani{
 
-    private $_config = NULL;    
-    public $framework = null;
-    public $_title = 'page blank';
-    public $_stylesheets = NULL;
-    public $_javascripts = NULL;
-    public $_breadcrumbs = NULL;
-    private $module_path =  NULL;
+    private $_module_path =  NULL;
+    private $_partials = [];
+    protected $config = NULL;   
+    public $coding = NULL;
+    public $framework = NULL;
+
 
     public function __construct(){
         helper('html');
-        $this->_config = config('View');     
-        $this->framework = base_url().$this->_config->repository['assets']
-                                    .$this->_config->repository['framework'];
+        $this->config = config('View');     
+        $this->framework = base_url(
+            $this->config->repository['assets'].
+            $this->config->repository['framework']            
+        );
+        $this->coding= (object) [
+                'charset' => config('App')->charset,
+                'lang'    => config('App')->defaultLocale]; 
+
+        if (!empty($this->config->custom)):
+            $this->custom = $this->config->custom;
+        endif;
     }
 
-    public function __set($property, $value){
-        self::_execTriggerFunctions($property,$value);            
-    }
 
-    public function Render($view,$params){
-        try {
-            $data = array_merge($params , array('Template' => $this));
-            return view(
-                    $this->module_path.$view ,
-                    $data ,
-                    [ 'cache' => $this->_config->cache ]
-                );            
-        } catch (\Throwable $error) {
-            if(ENVIRONMENT == 'production'):
-                print('la vista ['.$view.'] no podido cargar ¡Quiza no exista!. Verifique la ruta');
+    /**
+    * Section of the methods magics 
+    */
+    function __set($function, $params){
+        if($function !='libraries'):
+            if($function == 'breadcrumbs'):
+                $this->_partials[$function] = $params;
             else:
-                print($error->getMessage());
-            endif;    
-            exit();
-        }
+                $this->_partials[$function] = call_user_func_array(
+                    array($this,"trigger_{$function}"), array($params)
+                );
+            endif;
+        else:
+                self::trigger_libraries($params);
+        endif;
     }
 
-    public function Component($view,$params){
-        try {
-            return view(
-                $this->module_path.$view ,
-                $params ,
-                [ 'cache' => $this->_config->cache / 2  ]
-            );            
-        } catch (\Throwable $error) {
-            if(ENVIRONMENT == 'production'):
-                print('el component ['.$view.'] no podido cargar ¡Quiza no exista!. Verifique la ruta');
+    function __get($property){
+        if (!array_key_exists($property, $this->_partials)) {
+            if($property == 'title'):
+                return 'empty page';
+            elseif($property == 'icon'):
+                return $this->_partials['icon'] = self::generateIcon();
             else:
-                print($error->getMessage());
-            endif;    
-            exit();
+                return null;
+            endif;
         }
-    } 
-
-    public function Widget($organism){  
-        try {
-            return view_cell ( __NAMESPACE__.'\Amantecatl::'.$organism , $this->_config->cache );            
-        } catch (\Throwable $error) {
-            if(ENVIRONMENT == 'production'):
-                print('La función ['.$organism.'] no esta implementada');
-            else:
-                print($error->getMessage());
-            endif;  
-            exit();
-        }
+        return $this->_partials[$property];
     }
-    
+
+    /*
+    * Construcción de vistas :
+    * 
+    * Widgets : Son los organismos que extienden la funcionalidad de los templates
+    * Componentes : son los organismos que se encuentran dentro de la sección de modulos
+    */
     public function setPathModule($path){
-        $this->module_path = $this->_config->main_path.$path;
+        $this->_module_path = $this->config->main_path.$path;
     }
 
     public function getPathModule(){
-        return $this->module_path;
+        return $this->_module_path;
+    } 
+
+    public function Render(){
+        if(func_num_args() > 2)
+            throw new \Exception(
+                'hunabku detecto que no sabes usar la función ya que solo necesita 2 parámetros'
+            );            
+        if(func_num_args() == 1 && is_array(func_get_arg(0)) ):
+            $_view =  $this->_module_path.'skeleton';
+            $params = func_get_arg(0);
+        elseif(func_num_args() == 2 && is_string(func_get_arg(0)) && is_array(func_get_arg(1)) ):
+            $_view =  $this->_module_path.func_get_arg(0);
+            $params = func_get_arg(1);
+        else:
+            throw new \Exception(
+                'hunabku detecto parámetros invalidos : (string ,array)'
+            );  
+        endif;
+        try {
+            $data = array_merge($params , array('Template' => $this));
+            if(ENVIRONMENT != 'production'):
+                return view( $_view , $data );
+            else:
+                return view( $_view , $data , ['cache' => $this->config->cache] );   
+            endif;      
+        } catch (\Throwable $error) {
+            throw new \Exception('hunabku detecto errores al publicar la vista -'.$error->getMessage());            
+        }
+    }  
+
+    public function Component(string $view, array $params , $cache=0):array{
+        $_organism = [];
+        $_view = \Config\Services::renderer();
+        try {
+            foreach($params as $key => $value):
+                $_view->setVar($key,$value,'html');
+            endforeach;
+            if(ENVIRONMENT != 'production'):
+                $_organism[$view] = $_view->render($this->_module_path.$view);
+            else:
+                $_cache = $cache == 0 ?  $this->config->cache : $cache;
+                $_organism[$view] = $_view->render(
+                                        $this->_module_path.$view,
+                                        ['cache' =>$cache]
+                                    );
+            endif;   
+            return $_organism;            
+        } catch (\Throwable $error) {
+            throw new \Exception(
+                "hunabku no pudo renderizar el componente {$view} ".$error->getMessage()
+            );          
+        }
     }
 
-    private function trigger_title($title) {
+    public function Widget(string $organism, array $params = [], int $cache=0){
+        $_component = __NAMESPACE__.'\Amantecatl::'.$organism;
+        try {
+            if(ENVIRONMENT != 'production'):
+                return view_cell ($_component,$params);  
+            else:
+                $_cache = $cache == 0 ? $this->config->cache : $cache;
+                return view_cell($_component,$params, $cache);   
+            endif;  
+        } catch (\Throwable $error) {
+            throw new \Exception('widget no renderizado -'.$error->getMessage());            
+        }          
+    }
+    /*
+    * triggers section that establish a controller and template connection
+    * control request in method magic _get & _set
+    */
+    private function generateIcon() {    
+        $_icon = link_tag(
+                    $this->config->repository['assets'].$this->config->icon ,
+                    'shortcut icon', 'image/png'
+                );
+        return $_icon."\n";
+    }
+    private function trigger_title($title) {        
         return htmlspecialchars(strip_tags($title)).' | '.APP;
     }
-
-    private function trigger_stylesheets($url){
+    private function trigger_stylesheets($url,$library=FALSE){
         if (is_array($url)):
             $resource = '';
             foreach ($url as $u):
-                $resource .= self::trigger_stylesheets( 
-                                    substr($this->_config->repository['assets'],1).$u.'?ver='.VERSION
-                            );
+                if (!filter_var($u, FILTER_VALIDATE_URL) === FALSE):
+                    $resource.= self::trigger_stylesheets(htmlspecialchars(strip_tags($u)));
+                else:
+                    $resource.= self::trigger_stylesheets($u);
+                endif;
             endforeach;
             return $resource;
         endif;
-
-        if (self::_externalValidateUrls($url)):
-            $resource = '<link rel="stylesheet" href="' . htmlspecialchars(strip_tags($url)) . '">';
-        else:
-            $resource = link_tag($url);
-        endif;    
-        return $resource."\n\t";
+        $_path = $this->config->repository['assets'];
+        $_path = !$library ? $_path : $this->config->repository['libraries'];
+        $resource =  !filter_var($url, FILTER_VALIDATE_URL) === FALSE ? 
+                        "<link href=\"{$url}\" rel=\"stylesheet\" type=\"text/css\">" : 
+                        link_tag($_path.$url.'?ver='.VERSION );    
+        return $resource."\n";
     }
-
-    private function trigger_javascripts($url) {
+    private function trigger_javascripts($url,$library = FALSE) {
         if (is_array($url)):
             $resource = '';
             foreach ($url as $u):
-                $resource .= self::trigger_javascripts( 
-                                    substr($this->_config->repository['assets'],1).$u.'?ver='.VERSION
-                            );
+                if (!filter_var($u, FILTER_VALIDATE_URL) === FALSE):
+                    $resource.= htmlspecialchars(strip_tags($url));
+                else:
+                    $resource.= self::trigger_javascripts($u);
+                endif;
             endforeach;
             return $resource;
-        endif;
-        
-        if (self::_externalValidateUrls($url)):
-            $resource = '<script src="' . htmlspecialchars(strip_tags($url)) . '"></script>';
+        endif;      
+        $_path = $this->config->repository['assets'];
+        $_path =  !$library ? $_path : $this->config->repository['libraries'];
+        $resource = !filter_var($url, FILTER_VALIDATE_URL) === FALSE ? 
+                        $resource = "<script src=\"{$url}\" type=\"text/javascript\"></script>" :
+                        script_tag($_path.$url.'?ver='.VERSION ) ;
+        return $resource . "\n";
+    }
+
+    private function trigger_libraries($params){
+        if( count($params) != 2 )
+            throw new \Exception('hunabku detecta parámetros incorrectos');
+        $_css = null;
+        $_js = null;
+        if( isset($params['js']) || isset($params['css']) ):
+            $_css = $params['css']; $_js = $params['js'];
         else:
-            $resource = script_tag($url);
+            $_css = $params[0]; $_js = $params[1] ; 
         endif;
-        return $resource . "\n\t";
+        @$this->_partials['javascripts'].= self::trigger_javascripts($_js,TRUE);
+        @$this->_partials['stylesheets'].= self::trigger_stylesheets($_css,TRUE);
     }
 
-    private function trigger_breadcrumbs($info){
-        return  (object) array(
-                    'title' => $info[0] ,  
-                    'navigator' => $info[1]
-                );    
+    private function trigger_custom($params){
+        return 
+            $this->_partials['custom'] = 
+                            (object) array(
+                                'theme' => $params['theme']
+                            );
     }
-
-    private function _execTriggerFunctions($function,$params){
-        switch($function):
-            case 'stylesheets':
-                $this->_stylesheets = self::trigger_stylesheets($params);
-            break;
-            case 'javascripts':
-                $this->_javascripts = self::trigger_javascripts($params);
-            break;
-            case 'title':
-                $this->_title = self::trigger_title($params);
-            break;
-            case 'breadcrumbs':
-                $this->_breadcrumbs = self::trigger_breadcrumbs($params);
-                break;
-            default:
-                print('error no funcion');
-        endswitch;
-    }
-
-    private function _externalValidateUrls($resource){
-        if (
-                stristr($resource, 'http://') && 
-                stristr($resource, 'https://') && 
-                substr($resource, 0, 2) == '//'
-            ):
-            return TRUE;
-        else:
-            return FALSE;
-        endif;
-    }
-
 }

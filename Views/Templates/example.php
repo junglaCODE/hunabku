@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="msapplication-tap-highlight" content="no">
-    <title><?= $Template->_title ?></title>
+	<?= $Template->icon ?>
     <link href="<?= $Template->framework ?>/style.css" type="text/css" rel="stylesheet">
-    <?= $Template->_stylesheets ?>
+    <?= $Template->stylesheets ?>
+	<title><?= $Template->title ?></title>
   </head>
 
   <body>
@@ -17,7 +18,7 @@
     </header>
   
 
-    <div id="main" data-desing="template-module">
+    <div id="main" >
           <?= $this->renderSection('module') ?>
     </div>
 	  
@@ -25,7 +26,7 @@
 	
 	</footer>	
 	
-    <script src="<?= $Template->framework ?>/../jquery.js?ver=<?=VERSION?>" type="text/javascript"></script>
-    <?= $Template->_javascripts ?>
+    <script src="<?= $Template->framework ?>/../jquery.js" type="text/javascript"></script>
+    <?= $Template->javascripts ?>
   </body>
 </html>
