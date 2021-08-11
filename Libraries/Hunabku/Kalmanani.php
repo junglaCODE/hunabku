@@ -45,7 +45,9 @@ class Kalmanani{
                 );
             endif;
         else:
-                self::trigger_libraries($params);
+            $assets = self::trigger_libraries($params);
+            @$this->_partials['stylesheets'] .= self::trigger_stylesheets($assets['css'],TRUE);
+            @$this->_partials['javascripts'] .= self::trigger_javascripts($assets['js'],TRUE);
         endif;
     }
 
@@ -155,9 +157,10 @@ class Kalmanani{
     private function trigger_title($title) {        
         return htmlspecialchars(strip_tags($title)).' | '.APP;
     }
+    
     private function trigger_stylesheets($url,$library=FALSE){
+        $resource = empty($this->_partials['javascripts']) ? '' : $this->_partials['javascripts'];
         if (is_array($url)):
-            $resource = '';
             foreach ($url as $u):
                 if (!filter_var($u, FILTER_VALIDATE_URL) === FALSE):
                     $resource.= self::trigger_stylesheets(htmlspecialchars(strip_tags($u)));
@@ -169,43 +172,42 @@ class Kalmanani{
         endif;
         $_path = $this->config->repository['assets'];
         $_path = !$library ? $_path : $this->config->repository['libraries'];
-        $resource =  !filter_var($url, FILTER_VALIDATE_URL) === FALSE ? 
+        $resource .=  !filter_var($url, FILTER_VALIDATE_URL) === FALSE ? 
                         "<link href=\"{$url}\" rel=\"stylesheet\" type=\"text/css\">" : 
                         link_tag($_path.$url.'?ver='.VERSION );    
         return $resource."\n";
     }
+
     private function trigger_javascripts($url,$library = FALSE) {
+        $resource = empty($this->_partials['javascripts']) ? '' : $this->_partials['javascripts'];
         if (is_array($url)):
-            $resource = '';
             foreach ($url as $u):
                 if (!filter_var($u, FILTER_VALIDATE_URL) === FALSE):
-                    $resource.= htmlspecialchars(strip_tags($url));
+                    $resource.= self::trigger_javascripts(htmlspecialchars(strip_tags($u)));
                 else:
                     $resource.= self::trigger_javascripts($u);
                 endif;
             endforeach;
             return $resource;
-        endif;      
+        endif;   
         $_path = $this->config->repository['assets'];
         $_path =  !$library ? $_path : $this->config->repository['libraries'];
-        $resource = !filter_var($url, FILTER_VALIDATE_URL) === FALSE ? 
-                        $resource = "<script src=\"{$url}\" type=\"text/javascript\"></script>" :
+        $resource .= !filter_var($url, FILTER_VALIDATE_URL) === FALSE ? 
+                        "<script src=\"{$url}\" type=\"text/javascript\"></script>" :
                         script_tag($_path.$url.'?ver='.VERSION ) ;
         return $resource . "\n";
     }
 
     private function trigger_libraries($params){
+        $_libraries = [];
         if( count($params) != 2 )
             throw new \Exception('hunabku detecta parámetros incorrectos');
-        $_css = null;
-        $_js = null;
         if( isset($params['js']) || isset($params['css']) ):
-            $_css = $params['css']; $_js = $params['js'];
+            $_libraries = array('css' => $params['css'], 'js' => $params['js']);
         else:
-            $_css = $params[0]; $_js = $params[1] ; 
+            $_libraries = array('css' => $params[0] , 'js' => $params[1] );
         endif;
-        @$this->_partials['javascripts'].= self::trigger_javascripts($_js,TRUE);
-        @$this->_partials['stylesheets'].= self::trigger_stylesheets($_css,TRUE);
+       return $_libraries;
     }
 
     private function trigger_custom($params){
