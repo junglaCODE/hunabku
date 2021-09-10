@@ -7,7 +7,7 @@ Se usa tambien las libreria de view de ci4 que ayuda mejorar el performance de l
 
 ## Significado
 - **Hunabku :** Dios Maya de la creación
-- **Kalkami :** Palabra Nahualt que significa Arquitecto
+- **Kalmanani :** Palabra Nahualt que significa Arquitecto
 - **Amantecatl :** Palabra Nahualt que significa Artesano
 
 
