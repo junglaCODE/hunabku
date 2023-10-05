@@ -77,6 +77,6 @@ class View extends BaseView
 	 * Configuration of the repository of assets, what works for
 	 * render used template.
 	 */
-	public $repository = array();
+	public $repository = [];
 
 }
