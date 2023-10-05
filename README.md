@@ -47,7 +47,8 @@ Se usa tambien las libreria de view de ci4 que ayuda mejorar el performance de l
 ## Controller > BaseController.php
 
 Agregar el siguiente codigo en la archivo BaseController.php . Es importante destacar que nombre de la variable debe ser indentica a la nombre del parametro $instance_render
-``` public $Hunabku;
+```
+	public $Hunabku;
 	$this->Hunabku = new \App\Libraries\Hunabku\Kalmanani();
 ```
 ## Incorporar el contenido de Render.php a View.php
