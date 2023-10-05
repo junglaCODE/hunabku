@@ -7,45 +7,76 @@ Se usa tambien las libreria de view de ci4 que ayuda mejorar el performance de l
 
 ## Significado
 - **Hunabku :** Dios Maya de la creación
-- **Kalmanani :** Palabra Nahualt que significa Arquitecto
-- **Amantecatl :** Palabra Nahualt que significa Artesano
+    - **Kalmanani :** Palabra Nahualt que significa Arquitecto
+    - **Amantecatl :** Palabra Nahualt que significa Artesano
 
 
 ## Estructura 
 - App
   - Config
-    -  View.php > sobre escribir este archivo en el directorio
+    -  Archivo Render.php : Agregar archivo en el directorio app/Config. * Se recomienda anexar este contenido en el archivo View.php 
    - Libraries
-     -  Hunabku > Agregar la carpeta en este directorio
+     - Directorio Hunabku : Agregar la carpeta en este directorio app/Libraries
    - Views
-     - Templates > Agregar esta carpeta en este directorio
+     - Directorio Templates : Crear esta carpeta en el directorio app/Views
 
-## Config > View.php
+## Config > Render.php
 ```
-  /* este parametro modifica la cache de las vistas*/
-	public $cache = SECOND; 
-  
- /* este parametro da la ruta de las widgets que se van usar*/
-	public $widgets = '/Templates/_widgets'; 
-  
-/* este parametro modifica las rutas de nuestro directorio que usara para renderizar mis paginas*/
-	public $repository = array(
-			'assets' 	=> 	'/_assets/' , 
-			'framework'	=>	'third_party/framework-css,
-			'images'	=> 	'/_assets/images' ,
-			'fonts'		=> 	'/_assets/fonts' ,
-		);
+    /*Objeto principal que crea la instancia de la clase Kalmanani*/ 
+    public $instance_render = 'Hunabku';
 	
+    /**
+	* Configuración de caché para view_cell y view. constantes usadas
+	* sección: Constantes de tiempo, para duración de tiempo
+	* en el caché está en segundos. Si se pretende incorporar el contenido de Render
+	* a View se debe verificar que este parametro no este duplicado
+	*/
+	public $cache = 60;
+    /** 
+	* este directorio se utiliza para almacenar todo lo relacionado con
+	* plantillas y widgets de esta biblioteca
+	**/
+	public $widgets = 'templates/widgets/';
+	/**
+	* Configuración del repositorio de activos, para qué sirve
+    * renderizar plantilla usada.
+	*/
+	public $repository = [];
 ```
 
 ## Controller > BaseController.php
 
+Agregar el siguiente codigo en la archivo BaseController.php . Es importante destacar que nombre de la variable debe ser indentica a la nombre del parametro $instance_render
+``` public $Hunabku;
+	$this->Hunabku = new \App\Libraries\Hunabku\Kalmanani();
 ```
-	$this->Template = new \App\Libraries\Hunabku\Kalmanani();
+## Incorporar el contenido de Render.php a View.php
+Este metodo es el adecuado ya Hunabku es extension de la Views que maneja CodeIgniter 
+Por lo que se hace mas flexible el mantenimiento y integración
+
+Para esto se debe poner este codigo al final del archivo Config/View.php
+
+> Se debe tener cuidado con el parametro Cache del archivo View ya que este tiene uno por defecto. Asi que solo debe quedar uno
+
 ```
-
-## Example
-
-Se puede usar de ejemplo la vista skeleton.php que hace referencia al template que esta ubicado en `Templates\example.php`
-acceso:  
-- **http:localhost\index**
+    /*Objeto principal que crea la instancia de la clase Kalmanani*/ 
+    public $instance_render = 'Hunabku';
+	
+    /**
+	* Configuración de caché para view_cell y view. constantes usadas
+	* sección: Constantes de tiempo, para duración de tiempo
+	* en el caché está en segundos. Si se pretende incorporar el contenido de Render
+	* a View se debe verificar que este parametro no este duplicado
+	*/
+	public $cache = 60;
+    /** 
+	* este directorio se utiliza para almacenar todo lo relacionado con
+	* plantillas y widgets de esta biblioteca
+	**/
+	public $widgets = 'templates/widgets/';
+	/**
+	* Configuración del repositorio de activos, para qué sirve
+    * renderizar plantilla usada.
+	*/
+	public $repository = [];
+```
