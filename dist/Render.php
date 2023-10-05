@@ -74,6 +74,8 @@ class Render  extends \CodeIgniter\Config\BaseConfig
 	 * Configuration of the repository of assets, what works for
 	 * render used template.
 	 */
-	public $repository = [];
+	public $repository = [
+        'framework' => 'nothing'
+    ];
 
 }
