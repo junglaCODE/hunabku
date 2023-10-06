@@ -136,9 +136,11 @@ class Kalmanani{
     private function trigger_title($title) {        
         return htmlspecialchars(strip_tags($title));
     }
+
     private function trigger_properties(array $params){
         return  (object) $params;
     }
+
     private function trigger_stylesheets($path){
         $resource = empty($this->_partials['stylesheets']) ? '' : $this->_partials['stylesheets'];
         if (is_array($path)):
@@ -153,7 +155,7 @@ class Kalmanani{
         endif;
         $resource .=  !filter_var($path, FILTER_VALIDATE_URL) === FALSE ? 
                         "<link href=\"{$path}\" rel=\"stylesheet\" type=\"text/css\">" : 
-                        link_tag($path.'?ver='. $this->app->version );    
+                        link_tag($this->config->repository['css'].'/'.$path.'?ver='. $this->app->version );    
         return $resource."\n";
     }
 

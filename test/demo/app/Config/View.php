@@ -60,7 +60,7 @@ class View extends BaseView
     * For more details :  https://github.com/junglaCODE/hunabku
     */ 
     /*Object main for instances*/ 
-    public $name_render = 'Hunabku';
+    public $instace_render = 'Hunabku';
 	
     /**
 	 * Configuration of cache for view_cell and view. used constants
@@ -77,6 +77,9 @@ class View extends BaseView
 	 * Configuration of the repository of assets, what works for
 	 * render used template.
 	 */
-	public $repository = [];
+	public $repository = [
+        'framework'	=>	'assets' ,
+        'css'       => 'assets'
+    ];
 
 }
