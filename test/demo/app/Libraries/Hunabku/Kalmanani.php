@@ -24,7 +24,9 @@ class Kalmanani{
             $this->framework = base_url( $this->config->repository['framework'] );
             $this->app = (object) [
                 'charset' => config('App')->charset,
-                'lang'    => config('App')->defaultLocale
+                'lang'    => config('App')->defaultLocale,
+                'name'    => 'junglacode' ,
+                'version' => '1.0',
             ]; 
 
             if (!empty($this->config->custom)):

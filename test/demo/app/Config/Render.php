@@ -1,10 +1,9 @@
 <?php
 
-namespace Config;
+namespace Render\Config;
 
-use CodeIgniter\Config\View as BaseView;
 
-class Render  extends BaseView
+class Render  extends \CodeIgniter\Config\BaseConfig
 {
     /**
      * When false, the view method will clear the data between each
@@ -77,7 +76,7 @@ class Render  extends BaseView
 	 * render used template.
 	 */
 	public $repository = [
-        'framework'	=>	'bootstrap' ,
+        'framework'	=>	'__assets' ,
     ];
 
 }

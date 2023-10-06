@@ -50,19 +50,19 @@ Vagrantfile
 #-------------------------
 
 test/demo/writable/cache/*
-!writable/cache/index.html
+!test/demo/writable/cache/index.html
 
 
 test/demo/writable/logs/*
-!writable/logs/index.html
+!test/demo/writable/logs/index.html
 
 
 test/demo/writable/session/*
-!writable/session/index.html
+!test/demo/writable/session/index.html
 
 
 test/demo/writable/uploads/*
-!writable/uploads/index.html
+!test/demo/writable/uploads/index.html
 
 
 test/demo/writable/debugbar/*
