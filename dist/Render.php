@@ -1,16 +1,16 @@
 <?php
-
 namespace Render\Config;
 
-
-class Render  extends \CodeIgniter\Config\BaseConfig
-{
-
-    /*
+   /*
     * The following settings will be used to configure the hunabku library and the 
     * options are as follows:
     * For more details :  https://github.com/junglaCODE/hunabku
     */ 
+	
+
+class Render  extends \CodeIgniter\Config\BaseConfig
+{
+
     /*Object main for instances*/ 
     public $instace_render = 'Hunabku';
 	
@@ -23,8 +23,14 @@ class Render  extends \CodeIgniter\Config\BaseConfig
     /**
 	 * this directory is used to store everything related to
 	 *  templates and widgets of this library
-	 **/
+	**/
 	public $widgets = 'templates/widgets/';
+	 /**
+	 * This directory is used to determine where the views 
+	 * of your solution will be. Remember that CI places the render
+	 *  from Path App/Views
+	 **/
+	public $path_views = 'interfaces/';
 	/**
 	 * Configuration of the repository of assets, what works for
 	 * render used template.

@@ -8,7 +8,6 @@
 
 class Kalmanani{
 
-    const PATH = 'interfaces/' ;
     
     protected $_partials = [];
     protected $config = NULL;   
@@ -84,10 +83,10 @@ class Kalmanani{
 
         try {   
             if(func_num_args() == 2):
-                $_view =  self::PATH.func_get_arg(0);
+                $_view =  $this->config->path_views.func_get_arg(0);
                 $params = func_get_arg(1);
             else:
-                $_view =  self::PATH.func_get_arg(0);
+                $_view =  $this->config->path_views.func_get_arg(0);
                 $params = [];
             endif;
             $data = array_merge($params , array( $this->config->instace_render => $this));
@@ -113,7 +112,7 @@ class Kalmanani{
         }          
     }
 
-    public function Component(string $view, array $params , $xss = TRUE):string
+    public function Component(string $organism, array $params , $xss = TRUE):string
     {
         $_view = \Config\Services::renderer();
         try {
@@ -121,10 +120,10 @@ class Kalmanani{
                 $context = $xss ? 'html' : 'raw';
                 $_view->setVar($key,$value,$context);
             endforeach;
-            return $_view->render(self::PATH.$view);         
+            return $_view->render($this->config->path_views.$organism);         
         } catch (\Throwable $error) {
             throw new \Exception(
-                "did not load component {$view} - ".$error->getMessage()
+                "did not load component {$organism} - ".$error->getMessage()
             );          
         }
     }

@@ -73,6 +73,12 @@ class View extends BaseView
 	 *  templates and widgets of this library
 	 **/
 	public $widgets = 'templates/widgets/';
+     /**
+	 * This directory is used to determine where the views 
+	 * of your solution will be. Remember that CI places the render
+	 *  from Path App/Views
+	 **/
+	public $path_views = 'interface/';
 	/**
 	 * Configuration of the repository of assets, what works for
 	 * render used template.
