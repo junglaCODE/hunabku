@@ -152,3 +152,74 @@ Para poder hacer el render solo debes invocar la funcion render Render el cual t
         return $this->Hunabku->Render('bootstrap_external', $parameters);
     }
 ```
+## Incorporar Widgets en los template
+
+Los widgets practicamente son componentes que van dentro del template esta funcionalidad hace que extienda tus templates con mas funcionalidades. Recordemos que esta librería trata de apagarse al concepto de atom desing. Por lo tanto los componentes vienen siendo los organismos y asu vez estos tienen moleculas. Un tema complejo aquí te dejo  [Mas información](https://www.uifrommars.com/atomic-design-ventajas/).
+
+Para poder integrar Widgets en el template se debe crear una carpeta en el directorio ```App/View/templates/widgets``` si se requiere cambiar el nombre de la carpeta solo hay que modificar el parametro de ``` public $widgets``` que puede estar en ```Config/Render``` o ```Config/Views```.
+
+Dentro de esa carpeta ira fragmentos de codígo HTML que construyen a dicho componente.
+
+### Template
+
+Incorporamos un widget Con la funcion de Widget , esta funcion hace referencia a la funcion de view_cell, para [Mas información](https://codeigniter.com/user_guide/outgoing/view_cells.html)
+
+```
+ <header>
+    <?= $Hunabku->Widget('TopNavigator',['dark']) ?>
+</header>
+```
+
+### Widget
+
+Crear un archivo que se llame topnavigator.php y dentro de este poner el siguiente fragmento de codígo
+
+```
+<nav class="navbar navbar-expand-md navbar-<?=$color?> fixed-top bg-<?=$color?>">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><?= $app?></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+        </ul>
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        </div>
+    </div>
+</nav>
+```
+
+### Amentecatl
+
+Esta clase es practicamente el artista que genera todos los widgets de los templates igual puede adaptarse para mas funcionales que requiera tu solución. Esta clase funciona como una interface donde vas agregando los widgets que requieras.
+
+Agregar la función. Para tener un orden en el codígo se recomienda que el nombre de la función se ha igual al nombre del archivo que tiene en la carpeta widgets
+
+```
+ public function TopNavigator(array $params)
+    {
+        $component = $this->config->widgets.strtolower(__FUNCTION__);
+        $properties = [
+            'color' => $params[0] ,
+            'app'   => $this->app->name ,
+        ];
+        return  view($component,$properties);
+    }
+```
+Prácticamente para construir un nuevo widget solo necesitas esta lineas de codígo 
+
+```
+$component = $this->config->widgets.strtolower(__FUNCTION__);
+$properties = [];
+return  view($component,$properties);
+```
+
+- ```$this->config->widgets.strtolower(__FUNCTION__);``` esto solo funcionara si tu nombre de la función es igual a la nombre del archivo. De lo contrario **$component** debe tener el nombre completo junto con la ruta del archivo que haces refernecia. 
+- Las **properties** son todos los datos que quieres que se vayan a tu codigo html que estan en widgets
