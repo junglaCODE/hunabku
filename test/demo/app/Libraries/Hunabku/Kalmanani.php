@@ -8,7 +8,7 @@
 
 class Kalmanani{
 
-    const PATH = '' ;
+    const PATH = 'interfaces/' ;
     
     protected $_partials = [];
     protected $config = NULL;   
@@ -25,8 +25,8 @@ class Kalmanani{
             $this->app = (object) [
                 'charset' => config('App')->charset,
                 'lang'    => config('App')->defaultLocale,
-                'name'    => 'junglacode' ,
-                'version' => '1.0',
+                'name'    => config('App')->name,
+                'version' => config('App')->version,
             ]; 
 
             if (!empty($this->config->custom)):

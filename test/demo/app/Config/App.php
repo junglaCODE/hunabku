@@ -175,4 +175,12 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+    /*
+    * --------------------------------------------------------------------------
+    * Parameters of App Development for junglaCODE
+    * --------------------------------------------------------------------------
+    */
+        
+    public $name = "Test Hunabku";
+    public $version = "1.0"; 
 }
