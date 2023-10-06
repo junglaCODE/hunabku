@@ -4,7 +4,7 @@
 
 Librería para renderizar vistas para codeigniter 4, Esta basado en la idea de atomic desing de frost https://bradfrost.com/blog/post/atomic-web-design/.
 
-Se usa tambien las libreria de view de ci4 que ayuda mejorar el performance de la render de las vistas https://codeigniter4.github.io/userguide/outgoing/index.html
+Se usa tambien las libreria de view de ci4 que ayuda mejorar el performance de la render de las vistas https://codeigniter.com/user_guide/outgoing/views.html
 
 - **Autor :** JLGC/monolinux | jlgarcia@junglacode.org
 - **Web :** junglacode.org
@@ -49,12 +49,23 @@ me di a la tarea de hacer un fork del proyecto y hacerla compatible con CI4
 
 	public $widgets = 'templates/widgets/';
 
+ 	/**
+	 * This directory is used to determine where the views 
+	 * of your solution will be. Remember that CI places the render
+	 *  from Path App/Views
+	 **/
+	public $path_views = 'interfaces/';
+
 	/**
 	* Configuración del repositorio de activos, para qué sirve
     * renderizar plantilla usada.
 	*/
 
-	public $repository = [];
+	public $repository = [
+		'framework'	=>	'assets' ,
+        'css'       =>  'assets' ,
+        'js'        =>  'assets' ,
+	];
 ```
 ## Config > Amantecatl.php
 

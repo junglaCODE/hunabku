@@ -83,6 +83,10 @@ Para que se mantenga limpio el codigo en las vistas se recomienda tener la sigui
 
 ## Funcionalidad para crear un vista
 
+Comose comento anteriormente esta libreria es una extensión del render de vistas que nos provee CodeIgniter. Así que para mas información ir a  [View Layout](https://codeigniter.com/user_guide/outgoing/view_layouts.html)
+
+Recuerde que en un marco MVC, el Controlador actúa como principal ejecutor de todas las peticiones, por lo que es responsable de obtener una vista particular. Es necesario tener conocimiento del [Arquitectura MVC](https://codeigniter.com/user_guide/concepts/mvc.html?highlight=mvc)
+
 ### El template
 
 Este es un tamplate simple donde se hace peticiones desde un CDN de boostrap y practicamente hace los llamados de los parametros para que cuando estos se modifiquen desde los archivos de configuración los templates sea actualizen
@@ -119,6 +123,7 @@ Este es un tamplate simple donde se hace peticiones desde un CDN de boostrap y p
 La interface no es mas que la solución que vas realizar la cual se va incrustar dentro del template. Para esto se debe primero hacer referencia a que template vas utilizar y despues donde vas estar poner el contenido. 
 
 Si prestas atención ```renderSection``` que tienes en el template es la parte dinámica donde se quieres que se inserte el HTML , de ahi en adelante todo lo que este dentro de las etiquetas ``$this->section`` y ```$this->endSection```. Sera enviado desde el controlador
+
 
 ```
 <?= $this->extend('templates/simple') ?>

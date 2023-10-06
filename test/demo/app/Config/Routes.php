@@ -7,3 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('test', 'Home::test');
+$routes->get('fire', 'Home::fire');
