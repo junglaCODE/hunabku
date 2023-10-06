@@ -78,14 +78,15 @@ class View extends BaseView
 	 * of your solution will be. Remember that CI places the render
 	 *  from Path App/Views
 	 **/
-	public $path_views = 'interface/';
+	public $path_views = 'interfaces/';
 	/**
 	 * Configuration of the repository of assets, what works for
 	 * render used template.
 	 */
 	public $repository = [
         'framework'	=>	'assets' ,
-        'css'       => 'assets'
+        'css'       =>  'assets' ,
+        'js'        =>  'assets' ,
     ];
 
 }
